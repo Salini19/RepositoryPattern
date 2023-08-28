@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RepositoryPattern.Middlewares;
 using RepositoryPattern.Models;
 using RepositoryPattern.Repository;
 
@@ -29,7 +30,15 @@ namespace RepositoryPattern.Controllers
         public IActionResult GetUserById(int userId)
         {
             var user = _userRepository.GetUserById(userId);
-            return user != null ? Ok(user) : NoContent();
+            if (user != null)
+            {
+                return Ok(user);
+            }
+            else
+            {
+                throw new NotFoundException("User Not Found");
+            }
+          
         }
 
 

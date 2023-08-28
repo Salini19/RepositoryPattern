@@ -12,6 +12,7 @@ namespace RepositoryPattern.Controllers
         public AdminController(IRepository<Admin> userRepository)
         {
             _userRepository = userRepository;
+           
         }
 
         [HttpGet]

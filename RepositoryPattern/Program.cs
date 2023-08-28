@@ -2,8 +2,7 @@ using RepositoryPattern;
 using RepositoryPattern.Models;
 using RepositoryPattern.Repository;
 using Microsoft.EntityFrameworkCore;
-
-
+using RepositoryPattern.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +17,7 @@ var cons = builder.Configuration.GetSection("ConnectionStrings:DefaultConnection
 builder.Services.AddDbContext<Dbclass>(options => options.UseSqlServer(cons.ToString()));
 builder.Services.AddTransient<IRepository<User>, Repository<User>>();
 builder.Services.AddTransient<IRepository<Admin>, Repository<Admin>>();
+builder.Services.AddTransient<ExceptionMiddleware>();
 
 var app = builder.Build();
 
@@ -31,6 +31,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapControllers();
 
